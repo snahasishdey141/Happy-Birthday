@@ -1,496 +1,400 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Sneha!</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Sneha!</title>
 
-        :root {
-            --primary: #ff9a9e;
-            --primary-dark: #d66d75;
-            --secondary: #fad0c4;
-            --sponge: #f5e1a4; /* Cake inside color */
-            --sponge-dark: #e0c885;
-            --text: #555;
-            --white: #fff;
-        }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    :root{
+      --pink-1:#ffb0bd;
+      --pink-2:#ff8ea4;
+      --pink-3:#e46886;
+      --jam:#ff5b7d;
+      --sponge:#f5e2b6;
+      --sponge-dot:#e7d49c;
+      --plate:#f1f7ff;
+      --shadow:rgba(17,24,39,.2);
+      --text:#555;
+      --accent:#d63384;
+      --white:#fff;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text);
-        }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg,#fdfbfb 0%,#ebedee 100%);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      color:var(--text); overflow:hidden;
+    }
+    .container{
+      width:100%; max-width:520px; height:90vh; background:#fff; border-radius:20px;
+      box-shadow:0 10px 30px var(--shadow); position:relative; overflow:hidden; display:flex; flex-direction:column;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            height: 90vh;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+    /* pages */
+    .page{
+      position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      background:linear-gradient(to bottom,#fff1eb 0%,#ace0f9 100%); padding:20px; text-align:center;
+      transform:translateY(100%); opacity:0; pointer-events:none; transition:transform .6s ease, opacity .6s;
+    }
+    .page.active{transform:translateY(0); opacity:1; pointer-events:auto}
+    .page.prev{transform:translateY(-100%)}
 
-        /* --- PAGES --- */
-        .page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.6s ease-in-out, opacity 0.6s;
-            background: linear-gradient(to bottom, #fff1eb 0%, #ace0f9 100%);
-            padding: 20px;
-            text-align: center;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(100%);
-        }
+    h1{font-family:'Dancing Script',cursive; font-size:3rem; color:var(--accent); margin-bottom:14px}
+    p{font-size:1.05rem; line-height:1.6; color:#666}
+    .btn{
+      margin-top:22px; padding:12px 28px; border:0; border-radius:999px; background:var(--accent); color:#fff;
+      font-weight:600; cursor:pointer; box-shadow:0 10px 18px rgba(214,51,132,.25); transition:transform .15s, filter .15s;
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(.97)}
 
-        .page.active {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(0);
-        }
+    /* gift + gallery */
+    .gift-box{font-size:82px; cursor:pointer; animation:bounce 2s infinite}
+    @keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(-18px)}60%{transform:translateY(-8px)}}
+    .gallery{width:100%; display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:6px}
+    .photo-frame{background:#fff; padding:6px; border-radius:10px; box-shadow:0 6px 12px rgba(0,0,0,.08); transform:rotate(-2.5deg); transition:.2s}
+    .photo-frame:nth-child(even){transform:rotate(2.5deg)}
+    .photo-frame:hover{transform:scale(1.03); z-index:2}
+    .photo-frame img{width:100%; height:200px; object-fit:cover; border-radius:6px}
 
-        .page.prev {
-            transform: translateY(-100%);
-            opacity: 0;
-        }
+    /* =========================
+       PARTY CAKE — polished UI
+       ========================= */
+    .party{
+      display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; width:100%;
+    }
+    .instruction{
+      font-size:.95rem; color:#334155; background:rgba(255,255,255,.85);
+      padding:8px 14px; border-radius:999px; box-shadow:0 6px 14px rgba(0,0,0,.06);
+    }
 
-        /* --- TYPOGRAPHY & BUTTONS --- */
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: #d63384;
-            margin-bottom: 20px;
-        }
+    .stage{ position:relative; width:min(360px,85%); height:320px; }
+    .plate{
+      position:absolute; left:50%; transform:translateX(-50%); bottom:42px; width:90%; height:26px; border-radius:50%;
+      background:radial-gradient(ellipse at 50% 60%, var(--plate), #e6eefc 65%, #d9e6fb 66%);
+      box-shadow:0 16px 30px var(--shadow) inset, 0 12px 30px rgba(33,37,41,.15);
+    }
+    .cake{
+      position:absolute; left:50%; transform:translateX(-50%); bottom:65px; width:83%; height:160px;
+      filter:drop-shadow(0 12px 22px rgba(0,0,0,.25));
+    }
+    .cake__side{
+      position:absolute; inset:40px 0 0; border-radius:0 0 20px 20px; overflow:hidden;
+      background:
+        linear-gradient(#0000,#0000 55%, rgba(0,0,0,.06)),
+        linear-gradient(180deg, var(--pink-2) 0%, var(--pink-3) 110%);
+    }
+    .cake__inside{
+      position:absolute; inset:40px 0 0; border-radius:0 0 20px 20px; overflow:hidden; opacity:0;
+      background:
+        repeating-linear-gradient(0deg, var(--sponge) 0 22px, var(--jam) 22px 26px),
+        radial-gradient(circle at 30% 30%, var(--sponge-dot) 1px, #0000 1.5px) 0 0/9px 9px;
+      transition:opacity .4s ease .35s;
+    }
+    .cake__top{
+      position:absolute; left:50%; transform:translateX(-50%); top:0; width:100%; height:76px; border-radius:50%;
+      background:
+        radial-gradient(ellipse at 50% 20%, #ffffffb8 0 35%, #0000 36%),
+        radial-gradient(ellipse at 50% 65%, var(--pink-1), var(--pink-2) 60%, var(--pink-3) 120%);
+      box-shadow:0 12px 16px rgba(0,0,0,.08) inset, 0 2px 0 #fff inset;
+    }
+    .drips{
+      position:absolute; top:52px; left:0; right:0; height:36px; pointer-events:none;
+      background:
+        radial-gradient(12px 20px at 10% 0, var(--pink-2) 98%, #0000 100%) 4% 0/80px 100% repeat-x,
+        radial-gradient(16px 26px at 28% 0, var(--pink-2) 98%, #0000 100%) 0 0/110px 100% repeat-x,
+        radial-gradient(9px 18px at 52% 0, var(--pink-2) 98%, #0000 100%) 22% 0/90px 100% repeat-x,
+        radial-gradient(14px 24px at 76% 0, var(--pink-2) 98%, #0000 100%) 12% 0/120px 100% repeat-x;
+      filter:drop-shadow(0 2px 0 rgba(0,0,0,.05));
+    }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            color: #666;
-        }
+    .candle{
+      position:absolute; left:18%; top:-10px; width:18px; height:78px; border-radius:6px;
+      background:repeating-linear-gradient(45deg,#fff 0 8px,#ff3555 8px 16px);
+      box-shadow:0 6px 10px rgba(0,0,0,.15);
+    }
+    .candle::before{
+      content:""; position:absolute; left:50%; transform:translateX(-50%); top:-6px; width:28px; height:18px; border-radius:50%;
+      background:radial-gradient(ellipse at 50% 45%, #fff, #ffe7ea);
+      box-shadow:0 2px 3px rgba(0,0,0,.1);
+    }
+    .wick{
+      position:absolute; left:50%; transform:translateX(-50%); top:-16px; width:4px; height:14px; border-radius:2px;
+      background:linear-gradient(#222,#333); box-shadow:0 -3px 0 #0003 inset;
+    }
+    .flame{
+      position:absolute; left:50%; transform:translate(-50%, -18px) scale(1); top:0;
+      width:16px; height:28px; border-radius:50% 50% 45% 45%;
+      background:radial-gradient(ellipse at 50% 60%, #fff 0 25%, #ffe08a 26% 60%, #ff9c27 61% 100%);
+      box-shadow:0 0 12px 6px rgba(255,200,50,.55), 0 0 32px 18px rgba(255,160,20,.25);
+      animation:flicker .9s infinite ease-in-out alternate;
+      cursor:pointer;
+    }
+    .flame::after{
+      content:""; position:absolute; inset:-12px; border-radius:50%;
+      background:radial-gradient(circle, rgba(255,190,60,.25), #0000 60%);
+      filter:blur(6px); pointer-events:none;
+    }
+    @keyframes flicker{
+      0%{transform:translate(-50%,-18px) scale(1); filter:drop-shadow(0 0 10px rgba(255,180,30,.5))}
+      100%{transform:translate(calc(-50% + 1px), -16px) scale(.94)}
+    }
 
-        .btn {
-            padding: 12px 30px;
-            background: #d63384;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.4);
-            transition: transform 0.2s;
-            margin-top: 20px;
-        }
+    .smoke{
+      position:absolute; left:50%; transform:translateX(-50%); top:-22px; width:8px; height:8px; border-radius:50%;
+      background:radial-gradient(circle, rgba(175,175,175,.6), rgba(175,175,175,0) 60%);
+      opacity:0; pointer-events:none;
+      animation:smoke 1.4s ease forwards;
+    }
+    .smoke:nth-child(2){animation-delay:.1s}
+    .smoke:nth-child(3){animation-delay:.2s}
+    @keyframes smoke{
+      0%{opacity:.7; transform:translate(-50%,-4px) scale(.9)}
+      100%{opacity:0; transform:translate(-50%,-34px) scale(1.6)}
+    }
 
-        .btn:hover {
-            transform: scale(1.05);
-            background: #c21c68;
-        }
+    .cake.split .cake__side{clip-path:inset(0 50% 0 0 round 0 0 20px 20px)}
+    .cake.split .cake__side + .cake__side{clip-path:inset(0 0 0 50% round 0 0 20px 20px)}
+    .cake.split .left{transform:translateX(-10px) rotate(-1.5deg)}
+    .cake.split .right{transform:translateX(10px) rotate(1.5deg)}
+    .left,.right{transition:transform .55s cubic-bezier(.33,1.3,.4,1)}
+    .cake.show-inside .cake__inside{opacity:1}
 
-        /* --- PAGE 1 & 2 ASSETS --- */
-        .gift-box {
-            font-size: 80px;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-20px);}
-            60% {transform: translateY(-10px);}
-        }
+    .knife{
+      position:absolute; left:50%; transform:translateX(-50%); top:-120px; width:180px; height:44px; opacity:0; z-index:10;
+      transition:top .45s ease, opacity .25s;
+      filter:drop-shadow(0 6px 10px rgba(0,0,0,.25));
+    }
+    .knife svg{display:block; width:100%; height:100%}
+    .knife.cutting{top:90px; opacity:1}
 
-        .gallery {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            width: 100%;
-        }
-        .photo-frame {
-            background: white;
-            padding: 5px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transform: rotate(-3deg);
-            transition: transform 0.3s;
-        }
-        .photo-frame:nth-child(even) { transform: rotate(3deg); }
-        .photo-frame:hover { transform: scale(1.05) rotate(0); z-index: 10; }
-        .photo-frame img {
-            width: 100%; height: 200px; object-fit: cover; border-radius: 4px;
-        }
+    /* Confetti */
+    #confetti-canvas{position:absolute; inset:0; pointer-events:none; z-index:50}
 
-        /* --- REALISTIC CAKE STYLES --- */
-        .cake-wrapper {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        /* The cake is split into two containers: Left and Right */
-        .cake-body {
-            position: absolute;
-            bottom: 50px;
-            width: 260px;
-            height: 140px;
-            display: flex; /* Holds the two halves */
-        }
-
-        .cake-half {
-            position: relative;
-            width: 50%; /* Each takes half width */
-            height: 100%;
-            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        /* LAYERS (Rounded 3D Look) */
-        .layer {
-            position: absolute;
-            width: 100%; 
-            height: 60px; /* Thickness of layer */
-            background: linear-gradient(90deg, var(--primary-dark), var(--primary) 20%, var(--primary) 50%, var(--primary-dark));
-        }
-        
-        /* Adjust gradients for left/right halves so they match in the middle */
-        .cake-half.left .layer {
-            border-radius: 10px 0 0 10px;
-            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%);
-        }
-        .cake-half.right .layer {
-            border-radius: 0 10px 10px 0;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
-        }
-
-        .layer-bottom { bottom: 0; z-index: 1; }
-        .layer-middle { bottom: 30px; z-index: 2; }
-        .layer-top { bottom: 60px; z-index: 3; height: 50px; }
-
-        /* The Top Frosting (Oval) */
-        .frosting-top {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 40px; /* Oval height */
-            background-color: var(--primary-dark);
-            border-radius: 50%;
-            transform: scaleY(0.5); /* Flatten to make oval */
-            z-index: 4;
-            background: radial-gradient(circle at 30% 30%, var(--primary), var(--primary-dark));
-        }
-        
-        /* Split the oval visually */
-        .cake-half.left .frosting-top {
-            right: -50%; /* Push it to overlap correctly */
-            clip-path: inset(0 50% 0 0);
-        }
-        .cake-half.right .frosting-top {
-            left: -50%;
-            clip-path: inset(0 0 0 50%);
-        }
-
-        /* THE INSIDE (SPONGE TEXTURE) - Visible only on cut */
-        .cake-inner {
-            position: absolute;
-            top: 10px; /* Below frosting */
-            bottom: 0;
-            width: 0; /* Hidden initially */
-            background: repeating-linear-gradient(45deg, var(--sponge), var(--sponge) 5px, var(--sponge-dark) 5px, var(--sponge-dark) 6px);
-            transition: width 0.5s;
-            z-index: 0;
-        }
-
-        .cake-half.left .cake-inner {
-            right: 0;
-            border-right: 1px solid rgba(0,0,0,0.1);
-        }
-        .cake-half.right .cake-inner {
-            left: 0;
-            border-left: 1px solid rgba(0,0,0,0.1);
-        }
-
-        /* --- CUTTING ANIMATION CLASSES --- */
-        .cake-body.cut .cake-half.left {
-            transform: rotate(-5deg) translateX(-15px);
-        }
-        .cake-body.cut .cake-half.right {
-            transform: rotate(5deg) translateX(15px);
-        }
-        .cake-body.cut .cake-inner {
-            width: 100%; /* Reveal the inside */
-        }
-
-        /* CANDLE */
-        .candle {
-            position: absolute;
-            bottom: 95px;
-            right: 20px; /* Place on the left half effectively */
-            width: 12px;
-            height: 40px;
-            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff0000 5px, #ff0000 10px);
-            z-index: 5;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .flame {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 25px;
-            background: orange;
-            border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 10px yellow, 0 0 20px orange;
-            animation: flicker 0.8s infinite alternate;
-            cursor: pointer;
-            z-index: 6;
-        }
-        .flame.out { opacity: 0; animation: none; }
-        @keyframes flicker { 0% {transform: translateX(-50%) scale(1); opacity:1;} 100% {transform: translateX(-50%) scale(0.9); opacity:0.8;} }
-
-        /* KNIFE */
-        .knife {
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 80px;
-            opacity: 0;
-            z-index: 10;
-            transition: top 0.5s ease-in, opacity 0.3s;
-        }
-        .knife.cutting {
-            opacity: 1;
-            top: 100px; /* Moves down to the cake */
-        }
-
-        /* --- PAGE 4 --- */
-        .card {
-            background: #fff;
-            padding: 30px 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            max-width: 90%;
-            text-align: left;
-            position: relative;
-        }
-        .card:before {
-            content: '"';
-            font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            color: #fad0c4;
-            position: absolute;
-            top: -10px;
-            left: 10px;
-        }
-
-        #confetti-canvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99;
-        }
-        .instruction {
-            font-size: 0.9rem; color: #555; background: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 20px; display: inline-block;
-        }
-    </style>
+    /* Sound button (autoplay fallback) */
+    .sound-btn{
+      position:absolute; right:14px; bottom:14px;
+      padding:10px 14px; border:0; border-radius:999px;
+      background:#111827; color:#fff; font-size:.9rem; cursor:pointer;
+      box-shadow:0 8px 16px rgba(0,0,0,.22); opacity:.95;
+      z-index:60;
+    }
+    .sound-btn:hover{opacity:1}
+  </style>
 </head>
 <body>
-
-<div class="container">
+  <div class="container">
     <canvas id="confetti-canvas"></canvas>
 
-    <div class="page active" id="p1">
-        <div class="gift-box" onclick="nextPage(2)">🎁</div>
-        <h1>Hey Bestie!</h1>
-        <p>I made something special just for you.</p>
-        <button class="btn" onclick="nextPage(2)">Open Gift</button>
-    </div>
+    <!-- birthday music -->
+    <audio id="party-music"
+      src="https://github.com/basic30/Hack/raw/refs/heads/main/Scott%20Holmes%20Music%20-%20Happy%20Birthday.mp3"
+      preload="auto"></audio>
+    <!-- autoplay fallback button -->
+    <button id="soundBtn" class="sound-btn" style="display:none" aria-label="Enable sound">🔊 Enable sound</button>
 
-    <div class="page" id="p2">
-        <h1>Memories</h1>
-        <p>A few moments that make me smile.</p>
-        <div class="gallery">
-            <div class="photo-frame"><img src="https://i.ibb.co/Z1SdCb6G/photo-2025-12-07-12-56-46.jpg" alt="Memory"></div>
-            <div class="photo-frame"><img src="https://i.ibb.co/5XkcG5cx/photo-2025-12-07-12-57-09.jpg" alt="Memory"></div>
-            <div class="photo-frame"><img src="https://i.ibb.co/65wj1zK/photo-2025-12-07-12-57-12.jpg" alt="Memory"></div>
-            <div class="photo-frame"><img src="https://i.ibb.co/zWCbV9S9/photo-2025-12-07-12-57-17.jpg" alt="Memory"></div>
-        </div>
-        <button class="btn" onclick="nextPage(3)">Go to Party</button>
-    </div>
+    <!-- Page 1 -->
+    <section class="page active" id="p1">
+      <div class="gift-box" onclick="nextPage(2)">🎁</div>
+      <h1>Hey Bestie!</h1>
+      <p>I made something special just for you.</p>
+      <button class="btn" onclick="nextPage(2)">Open Gift</button>
+    </section>
 
-    <div class="page" id="p3">
-        <h1>Make a Wish!</h1>
-        <div class="cake-wrapper" id="cakeArea">
-            <div class="cake-body" id="cakeBody">
-                <div class="cake-half left">
-                    <div class="layer layer-bottom"></div>
-                    <div class="layer layer-middle"></div>
-                    <div class="layer layer-top"></div>
-                    <div class="frosting-top"></div>
-                    <div class="cake-inner"></div> <div class="candle">
-                        <div class="flame" id="flame"></div>
-                    </div>
-                </div>
+    <!-- Page 2 -->
+    <section class="page" id="p2">
+      <h1>Memories</h1>
+      <p>A few moments that make me smile.</p>
+      <div class="gallery">
+        <div class="photo-frame"><img src="https://i.ibb.co/Z1SdCb6G/photo-2025-12-07-12-56-46.jpg" alt="Memory"></div>
+        <div class="photo-frame"><img src="https://i.ibb.co/5XkcG5cx/photo-2025-12-07-12-57-09.jpg" alt="Memory"></div>
+        <div class="photo-frame"><img src="https://i.ibb.co/65wj1zK/photo-2025-12-07-12-57-12.jpg" alt="Memory"></div>
+        <div class="photo-frame"><img src="https://i.ibb.co/zWCbV9S9/photo-2025-12-07-12-57-17.jpg" alt="Memory"></div>
+      </div>
+      <button class="btn" onclick="nextPage(3)">Go to Party</button>
+    </section>
 
-                <div class="cake-half right">
-                    <div class="layer layer-bottom"></div>
-                    <div class="layer layer-middle"></div>
-                    <div class="layer layer-top"></div>
-                    <div class="frosting-top"></div>
-                    <div class="cake-inner"></div> </div>
+    <!-- Page 3 (Party) -->
+    <section class="page" id="p3">
+      <h1>Make a Wish!</h1>
+
+      <div class="party">
+        <div class="stage" id="cakeArea">
+          <div class="plate"></div>
+
+          <!-- Knife -->
+          <div class="knife" id="knife" aria-hidden="true">
+            <svg viewBox="0 0 180 44" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="blade" x1="0" x2="1">
+                  <stop offset="0" stop-color="#cfd5db"/>
+                  <stop offset=".55" stop-color="#f7fbff"/>
+                  <stop offset="1" stop-color="#aeb4ba"/>
+                </linearGradient>
+              </defs>
+              <path d="M6 24 L120 24 C140 24 165 8 174 4 C176 3 179 5 178 7 C174 16 150 34 120 36 L6 36 Z" fill="url(#blade)" stroke="#90969c" stroke-width="1"/>
+              <rect x="0" y="20" width="40" height="16" rx="8" fill="#3a2d21"/>
+              <circle cx="8" cy="28" r="2.5" fill="#c9a46d"/>
+            </svg>
+          </div>
+
+          <!-- Cake -->
+          <div class="cake" id="cake">
+            <div class="cake__top"></div>
+            <div class="drips"></div>
+
+            <div class="cake__side left"></div>
+            <div class="cake__side right"></div>
+
+            <div class="cake__inside"></div>
+
+            <!-- Candle -->
+            <div class="candle" id="candle">
+              <div class="wick"></div>
+              <div class="flame" id="flame" title="Tap to blow!"></div>
+              <!-- smoke puffs added by JS -->
             </div>
-            
-            <div class="knife" id="knife">🔪</div>
+          </div>
         </div>
-        
+
         <p class="instruction" id="msg">Tap the flame to blow it out!</p>
-        <button class="btn" id="nextBtn3" style="display:none;" onclick="nextPage(4)">Read Note</button>
-    </div>
+        <button class="btn" id="nextBtn3" style="display:none" onclick="nextPage(4)">Read Note</button>
+      </div>
+    </section>
 
-    <div class="page" id="p4">
-        <h1>Happy Birthday!</h1>
-        <div class="card">
-            <p>
-                To the one person who can annoy me to death, support me, bully me, save me, and still somehow be my favourite human — all in one day.<br><br>
-                Thank you for being the amazing person you are. I hope this year gives you everything you’ve been quietly wishing for… and everything you definitely deserve. More happiness, more growth, more success, and less overthinking.✨
-            </p>
-        </div>
-        <br>
-        <p>Best wishes! — Snahasish</p>
-        <button class="btn" onclick="location.reload()">Replay</button>
-    </div>
+    <!-- Page 4 -->
+    <section class="page" id="p4">
+      <h1>Happy Birthday!</h1>
+      <div class="card" style="background:#fff; padding:28px 20px; border-radius:12px; box-shadow:0 12px 24px rgba(0,0,0,.1); text-align:left; position:relative; max-width:92%">
+        <p>
+          To the one person who can annoy me to death, support me, bully me, save me, and still somehow be my favourite human — all in one day.<br><br>
+          Thank you for being the amazing person you are. I hope this year gives you everything you’ve been quietly wishing for… and everything you definitely deserve.
+          More happiness, more growth, more success, and less overthinking. ✨
+        </p>
+      </div>
+      <br/>
+      <p>Best wishes! — Snahasish</p>
+      <button class="btn" onclick="location.reload()">Replay</button>
+    </section>
+  </div>
 
-</div>
+  <script>
+    /* ===== MUSIC SETUP ===== */
+    const music   = document.getElementById('party-music');
+    const soundBtn = document.getElementById('soundBtn');
 
-<script>
-    // --- PAGE NAVIGATION ---
+    function playCakeMusic() {
+      if (!music) return;
+      music.loop = true;
+      music.volume = 0.6;
+      music.play().then(() => {
+        soundBtn.style.display = 'none';
+      }).catch(() => {
+        soundBtn.style.display = 'inline-block';
+      });
+    }
+    soundBtn.addEventListener('click', () => {
+      music.play().then(() => soundBtn.style.display = 'none');
+    });
+
+    /* ===== PAGE NAV ===== */
     let currentPage = 1;
-    function nextPage(pageNum) {
-        document.getElementById(`p${currentPage}`).classList.remove('active');
-        document.getElementById(`p${currentPage}`).classList.add('prev');
-        currentPage = pageNum;
-        const nextPageEl = document.getElementById(`p${currentPage}`);
-        nextPageEl.classList.remove('prev');
-        nextPageEl.classList.add('active');
+    function nextPage(pageNum){
+      document.getElementById(`p${currentPage}`).classList.remove('active');
+      document.getElementById(`p${currentPage}`).classList.add('prev');
+      currentPage = pageNum;
+      const el = document.getElementById(`p${currentPage}`);
+      el.classList.remove('prev'); el.classList.add('active');
+
+      // ▶ start music when the cake page appears
+      if (pageNum === 3) playCakeMusic();
     }
 
-    // --- CAKE & CONFETTI LOGIC ---
+    /* ===== CAKE INTERACTION ===== */
+    const cakeArea = document.getElementById('cakeArea');
     const flame = document.getElementById('flame');
     const msg = document.getElementById('msg');
-    const cakeArea = document.getElementById('cakeArea');
-    const cakeBody = document.getElementById('cakeBody');
     const knife = document.getElementById('knife');
+    const cake = document.getElementById('cake');
     const nextBtn3 = document.getElementById('nextBtn3');
-    let isCandleBlown = false;
-    let isCakeCut = false;
 
-    // 1. Blow Candle
-    flame.addEventListener('click', function(e) {
-        e.stopPropagation(); // Stop click from triggering cake cut immediately
-        if(!isCandleBlown) {
-            this.classList.add('out');
-            isCandleBlown = true;
-            msg.innerText = "Yay! Now tap the cake to cut it 🍰";
-            startConfetti();
-        }
+    let blown = false, cut = false;
+
+    // Blow candle
+    flame.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if(blown) return;
+      blown = true;
+
+      // hide flame, add smoke puffs
+      flame.style.opacity = 0;
+      for(let i=0;i<3;i++){
+        const s = document.createElement('span');
+        s.className = 'smoke';
+        document.getElementById('candle').appendChild(s);
+      }
+      msg.textContent = 'Yay! Now tap the cake to cut it 🍰';
+      startConfetti();
     });
 
-    // 2. Cut Cake Animation
-    cakeArea.addEventListener('click', function() {
-        if(isCandleBlown && !isCakeCut) {
-            isCakeCut = true;
-            
-            // Drop the knife
-            knife.classList.add('cutting');
+    // Cut cake
+    cakeArea.addEventListener('click', ()=>{
+      if(!blown || cut) return;
+      cut = true;
 
-            // Wait for knife to hit (0.4s), then split cake
-            setTimeout(() => {
-                cakeBody.classList.add('cut');
-                msg.innerText = "Delicious! 🎉";
-            }, 400);
+      knife.classList.add('cutting');
+      setTimeout(()=>{
+        cake.classList.add('split');
+        cake.classList.add('show-inside');
+        msg.textContent = 'Delicious! 🎉';
+      }, 380);
 
-            // Hide knife and show button after animation
-            setTimeout(() => {
-                knife.style.opacity = 0;
-                nextBtn3.style.display = "inline-block";
-            }, 1500);
-        }
+      setTimeout(()=>{
+        knife.style.opacity = 0;
+        nextBtn3.style.display = 'inline-block';
+      }, 1400);
     });
 
-    // --- CONFETTI ---
-    const canvas = document.getElementById("confetti-canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    let confettiParticles = [];
+    /* ===== CONFETTI (lightweight) ===== */
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    function sizeCanvas(){ canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+    sizeCanvas(); addEventListener('resize', sizeCanvas, {passive:true});
 
-    function startConfetti() {
-        for (let i = 0; i < 150; i++) {
-            confettiParticles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height - canvas.height,
-                color: `hsl(${Math.random() * 360}, 100%, 60%)`,
-                size: Math.random() * 8 + 4,
-                speedY: Math.random() * 3 + 2,
-                speedX: Math.random() * 4 - 2,
-                rotation: Math.random() * 360,
-                rotationSpeed: Math.random() * 10 - 5
-            });
-        }
-        animateConfetti();
+    let confetti = [];
+    function startConfetti(){
+      const N = 140;
+      confetti = Array.from({length:N}, ()=>({
+        x: Math.random()*canvas.width,
+        y: Math.random()*-canvas.height,
+        vx: (Math.random()*2-1)*1.6,
+        vy: Math.random()*2+2.2,
+        rot: Math.random()*360,
+        vr: Math.random()*6-3,
+        s: Math.random()*6+4,
+        c: `hsl(${Math.random()*360},100%,60%)`
+      }));
+      requestAnimationFrame(tick);
     }
-
-    function animateConfetti() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        confettiParticles.forEach((p, index) => {
-            p.y += p.speedY;
-            p.x += p.speedX;
-            p.rotation += p.rotationSpeed;
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.rotation * Math.PI / 180);
-            ctx.fillStyle = p.color;
-            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-            ctx.restore();
-            if (p.y > canvas.height) {
-                confettiParticles[index].y = -20;
-                confettiParticles[index].x = Math.random() * canvas.width;
-            }
-        });
-        requestAnimationFrame(animateConfetti);
+    function tick(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      if(!confetti.length) return;
+      for(const p of confetti){
+        p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle=p.c;
+        ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s);
+        ctx.restore();
+        if(p.y>canvas.height){ p.y = -20; p.x=Math.random()*canvas.width; }
+      }
+      requestAnimationFrame(tick);
     }
-    
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-</script>
-
+  </script>
 </body>
 </html>
