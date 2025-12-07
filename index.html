@@ -9,10 +9,10 @@
 
         :root {
             --primary: #ff9a9e;
-            --primary-dark: #e88a8e;
+            --primary-dark: #d66d75;
             --secondary: #fad0c4;
-            --sponge: #f5d1ba; /* Vanilla sponge color */
-            --sponge-dark: #dcb398;
+            --sponge: #f5e1a4; /* Cake inside color */
+            --sponge-dark: #e0c885;
             --text: #555;
             --white: #fff;
         }
@@ -78,6 +78,7 @@
             opacity: 0;
         }
 
+        /* --- TYPOGRAPHY & BUTTONS --- */
         h1 {
             font-family: 'Dancing Script', cursive;
             font-size: 3rem;
@@ -110,7 +111,7 @@
             background: #c21c68;
         }
 
-        /* --- PAGE 1 & 2 UTILS --- */
+        /* --- PAGE 1 & 2 ASSETS --- */
         .gift-box {
             font-size: 80px;
             animation: bounce 2s infinite;
@@ -128,7 +129,6 @@
             gap: 10px;
             width: 100%;
         }
-
         .photo-frame {
             background: white;
             padding: 5px;
@@ -139,137 +139,160 @@
         }
         .photo-frame:nth-child(even) { transform: rotate(3deg); }
         .photo-frame:hover { transform: scale(1.05) rotate(0); z-index: 10; }
-        .photo-frame img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; }
+        .photo-frame img {
+            width: 100%; height: 200px; object-fit: cover; border-radius: 4px;
+        }
 
-        /* --- PAGE 3: REALISTIC CAKE WITH SLICING --- */
+        /* --- REALISTIC CAKE STYLES --- */
         .cake-wrapper {
             position: relative;
             width: 300px;
             height: 300px;
             display: flex;
             justify-content: center;
-            align-items: flex-end;
-            margin-bottom: 50px;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        /* The two halves of the cake */
+        /* The cake is split into two containers: Left and Right */
+        .cake-body {
+            position: absolute;
+            bottom: 50px;
+            width: 260px;
+            height: 140px;
+            display: flex; /* Holds the two halves */
+        }
+
         .cake-half {
             position: relative;
-            width: 130px; /* Half the total cake width */
-            height: 200px;
-            overflow: hidden; /* Hides the other half of the circles */
-            transition: transform 1s ease-out;
-            transform-origin: bottom center;
+            width: 50%; /* Each takes half width */
+            height: 100%;
+            transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
-        /* When cut, move them apart */
-        .cake-wrapper.cut .cake-half.left {
-            transform: translateX(-20px) rotate(-5deg);
-        }
-        .cake-wrapper.cut .cake-half.right {
-            transform: translateX(20px) rotate(5deg);
-        }
-
-        /* Internal Layer Styling */
+        /* LAYERS (Rounded 3D Look) */
         .layer {
             position: absolute;
-            width: 260px; /* Full width relative to the half container */
-            height: 80px;
-            border-radius: 50%;
+            width: 100%; 
+            height: 60px; /* Thickness of layer */
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary) 20%, var(--primary) 50%, var(--primary-dark));
         }
         
-        /* Shift layers inside the halves so they line up */
-        .cake-half.left .layer { left: 0; }
-        .cake-half.right .layer { left: -130px; }
-
-        /* Bottom Tier */
-        .tier-bottom {
-            bottom: 0;
-            height: 100px;
-            background: linear-gradient(to right, var(--sponge-dark), var(--sponge));
+        /* Adjust gradients for left/right halves so they match in the middle */
+        .cake-half.left .layer {
+            border-radius: 10px 0 0 10px;
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%);
         }
-        .tier-bottom::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 40px;
-            background: var(--sponge); border-radius: 50%;
+        .cake-half.right .layer {
+            border-radius: 0 10px 10px 0;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
         }
 
-        /* Middle Frosting */
-        .frosting-middle {
-            bottom: 60px;
-            height: 80px;
-            background: linear-gradient(to right, #e08e92, #ff9a9e);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        }
-        .frosting-middle::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 40px;
-            background: #ffb7b2; border-radius: 50%;
-        }
+        .layer-bottom { bottom: 0; z-index: 1; }
+        .layer-middle { bottom: 30px; z-index: 2; }
+        .layer-top { bottom: 60px; z-index: 3; height: 50px; }
 
-        /* Top Tier */
-        .tier-top {
-            bottom: 110px;
-            height: 70px;
-            background: linear-gradient(to right, #e08e92, #ff9a9e);
-        }
-        .tier-top::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 35px;
-            background: #ffcdd2; border-radius: 50%; /* Top surface */
-            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.05);
-        }
-
-        /* The "Inside" Sponge Texture (Pseudo element on the cut line) */
-        .cake-half.left::after {
-            content: ''; position: absolute; right: 0; bottom: 0; width: 4px; height: 180px;
-            background: rgba(100, 50, 20, 0.1);
-        }
-
-        /* Candle - attached to the Right Half so it moves with it */
-        .candle-container {
+        /* The Top Frosting (Oval) */
+        .frosting-top {
             position: absolute;
-            bottom: 160px;
-            left: 20px; /* Relative to the right half container */
-            z-index: 10;
+            top: 0;
+            width: 100%;
+            height: 40px; /* Oval height */
+            background-color: var(--primary-dark);
+            border-radius: 50%;
+            transform: scaleY(0.5); /* Flatten to make oval */
+            z-index: 4;
+            background: radial-gradient(circle at 30% 30%, var(--primary), var(--primary-dark));
+        }
+        
+        /* Split the oval visually */
+        .cake-half.left .frosting-top {
+            right: -50%; /* Push it to overlap correctly */
+            clip-path: inset(0 50% 0 0);
+        }
+        .cake-half.right .frosting-top {
+            left: -50%;
+            clip-path: inset(0 0 0 50%);
         }
 
+        /* THE INSIDE (SPONGE TEXTURE) - Visible only on cut */
+        .cake-inner {
+            position: absolute;
+            top: 10px; /* Below frosting */
+            bottom: 0;
+            width: 0; /* Hidden initially */
+            background: repeating-linear-gradient(45deg, var(--sponge), var(--sponge) 5px, var(--sponge-dark) 5px, var(--sponge-dark) 6px);
+            transition: width 0.5s;
+            z-index: 0;
+        }
+
+        .cake-half.left .cake-inner {
+            right: 0;
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        .cake-half.right .cake-inner {
+            left: 0;
+            border-left: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* --- CUTTING ANIMATION CLASSES --- */
+        .cake-body.cut .cake-half.left {
+            transform: rotate(-5deg) translateX(-15px);
+        }
+        .cake-body.cut .cake-half.right {
+            transform: rotate(5deg) translateX(15px);
+        }
+        .cake-body.cut .cake-inner {
+            width: 100%; /* Reveal the inside */
+        }
+
+        /* CANDLE */
         .candle {
+            position: absolute;
+            bottom: 95px;
+            right: 20px; /* Place on the left half effectively */
             width: 12px;
             height: 40px;
-            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #d63384 5px, #d63384 10px);
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff0000 5px, #ff0000 10px);
+            z-index: 5;
             border-radius: 4px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-
+        
         .flame {
             position: absolute;
-            top: -25px; left: 50%; transform: translateX(-50%);
-            width: 14px; height: 26px;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 25px;
             background: orange;
             border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 10px orange, 0 0 20px yellow;
-            animation: flicker 0.6s infinite alternate;
+            box-shadow: 0 0 10px yellow, 0 0 20px orange;
+            animation: flicker 0.8s infinite alternate;
             cursor: pointer;
-            transition: opacity 0.5s;
+            z-index: 6;
         }
         .flame.out { opacity: 0; animation: none; }
+        @keyframes flicker { 0% {transform: translateX(-50%) scale(1); opacity:1;} 100% {transform: translateX(-50%) scale(0.9); opacity:0.8;} }
 
-        @keyframes flicker {
-            0% { transform: translateX(-50%) scale(1); opacity: 1; }
-            100% { transform: translateX(-50%) scale(0.9); opacity: 0.8; }
-        }
-
-        /* Knife Animation */
+        /* KNIFE */
         .knife {
             position: absolute;
             top: -100px;
             left: 50%;
-            transform: translateX(-50%) rotate(-45deg);
-            font-size: 60px;
+            transform: translateX(-50%);
+            font-size: 80px;
             opacity: 0;
-            z-index: 20;
-            transition: top 0.8s ease-in, opacity 0.3s;
+            z-index: 10;
+            transition: top 0.5s ease-in, opacity 0.3s;
+        }
+        .knife.cutting {
+            opacity: 1;
+            top: 100px; /* Moves down to the cake */
         }
 
-        /* --- PAGE 4: MESSAGE --- */
+        /* --- PAGE 4 --- */
         .card {
             background: #fff;
             padding: 30px 20px;
@@ -285,20 +308,15 @@
             font-size: 4rem;
             color: #fad0c4;
             position: absolute;
-            top: -10px; left: 10px;
+            top: -10px;
+            left: 10px;
         }
 
-        /* --- CONFETTI --- */
         #confetti-canvas {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: 99;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99;
         }
         .instruction {
-            font-size: 0.9rem; color: #555;
-            background: rgba(255,255,255,0.8);
-            padding: 8px 15px; border-radius: 20px;
-            display: inline-block; margin-top: 10px;
+            font-size: 0.9rem; color: #555; background: rgba(255,255,255,0.8); padding: 8px 15px; border-radius: 20px; display: inline-block;
         }
     </style>
 </head>
@@ -309,7 +327,7 @@
 
     <div class="page active" id="p1">
         <div class="gift-box" onclick="nextPage(2)">🎁</div>
-        <h1>Hey Sneha!</h1>
+        <h1>Hey Bestie!</h1>
         <p>I made something special just for you.</p>
         <button class="btn" onclick="nextPage(2)">Open Gift</button>
     </div>
@@ -328,28 +346,29 @@
 
     <div class="page" id="p3">
         <h1>Make a Wish!</h1>
-        
-        <div class="cake-wrapper" id="cakeWrapper">
-            <div class="cake-half left">
-                <div class="layer tier-bottom"></div>
-                <div class="layer frosting-middle"></div>
-                <div class="layer tier-top"></div>
-            </div>
-
-            <div class="cake-half right">
-                <div class="layer tier-bottom"></div>
-                <div class="layer frosting-middle"></div>
-                <div class="layer tier-top"></div>
-                <div class="candle-container">
-                    <div class="candle">
+        <div class="cake-wrapper" id="cakeArea">
+            <div class="cake-body" id="cakeBody">
+                <div class="cake-half left">
+                    <div class="layer layer-bottom"></div>
+                    <div class="layer layer-middle"></div>
+                    <div class="layer layer-top"></div>
+                    <div class="frosting-top"></div>
+                    <div class="cake-inner"></div> <div class="candle">
                         <div class="flame" id="flame"></div>
                     </div>
                 </div>
-            </div>
 
+                <div class="cake-half right">
+                    <div class="layer layer-bottom"></div>
+                    <div class="layer layer-middle"></div>
+                    <div class="layer layer-top"></div>
+                    <div class="frosting-top"></div>
+                    <div class="cake-inner"></div> </div>
+            </div>
+            
             <div class="knife" id="knife">🔪</div>
         </div>
-
+        
         <p class="instruction" id="msg">Tap the flame to blow it out!</p>
         <button class="btn" id="nextBtn3" style="display:none;" onclick="nextPage(4)">Read Note</button>
     </div>
@@ -370,7 +389,7 @@
 </div>
 
 <script>
-    // --- NAVIGATION ---
+    // --- PAGE NAVIGATION ---
     let currentPage = 1;
     function nextPage(pageNum) {
         document.getElementById(`p${currentPage}`).classList.remove('active');
@@ -381,48 +400,42 @@
         nextPageEl.classList.add('active');
     }
 
-    // --- CAKE LOGIC ---
+    // --- CAKE & CONFETTI LOGIC ---
     const flame = document.getElementById('flame');
     const msg = document.getElementById('msg');
-    const cakeWrapper = document.getElementById('cakeWrapper');
+    const cakeArea = document.getElementById('cakeArea');
+    const cakeBody = document.getElementById('cakeBody');
     const knife = document.getElementById('knife');
     const nextBtn3 = document.getElementById('nextBtn3');
-    
     let isCandleBlown = false;
     let isCakeCut = false;
 
     // 1. Blow Candle
-    flame.addEventListener('click', (e) => {
-        e.stopPropagation(); // Stop click from hitting cake wrapper
+    flame.addEventListener('click', function(e) {
+        e.stopPropagation(); // Stop click from triggering cake cut immediately
         if(!isCandleBlown) {
-            flame.classList.add('out');
+            this.classList.add('out');
             isCandleBlown = true;
             msg.innerText = "Yay! Now tap the cake to cut it 🍰";
             startConfetti();
         }
     });
 
-    // 2. Cut Cake
-    cakeWrapper.addEventListener('click', () => {
+    // 2. Cut Cake Animation
+    cakeArea.addEventListener('click', function() {
         if(isCandleBlown && !isCakeCut) {
             isCakeCut = true;
             
-            // Bring knife in
-            knife.style.opacity = 1;
-            knife.style.top = "20px"; // Move to top of cake
-            
-            // Knife moves down through cake
-            setTimeout(() => {
-                knife.style.top = "150px"; 
-            }, 300);
+            // Drop the knife
+            knife.classList.add('cutting');
 
-            // Cake Splits apart
+            // Wait for knife to hit (0.4s), then split cake
             setTimeout(() => {
-                cakeWrapper.classList.add('cut');
+                cakeBody.classList.add('cut');
                 msg.innerText = "Delicious! 🎉";
-            }, 800);
+            }, 400);
 
-            // Show Button & Hide Knife
+            // Hide knife and show button after animation
             setTimeout(() => {
                 knife.style.opacity = 0;
                 nextBtn3.style.display = "inline-block";
@@ -435,7 +448,6 @@
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
     let confettiParticles = [];
 
     function startConfetti() {
@@ -478,7 +490,7 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     });
-
 </script>
+
 </body>
 </html>
