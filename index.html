@@ -9,7 +9,9 @@
 
         :root {
             --primary: #ff9a9e;
+            --primary-dark: #e88a8e;
             --secondary: #fad0c4;
+            --cake-side: #7a5230; /* Brown for the side */
             --text: #555;
             --white: #fff;
             --gold: #ffd700;
@@ -157,118 +159,128 @@
             border-radius: 4px;
         }
 
-        /* --- PAGE 3: CAKE --- */
+        /* --- PAGE 3: THE NEW CAKE --- */
         .cake-container {
             position: relative;
-            margin-top: 50px;
-            cursor: pointer;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .cake {
-            position: relative;
-            width: 250px;
-            height: 200px;
-            margin: 0 auto;
-        }
-
-        .plate {
-            width: 270px;
-            height: 110px;
             position: absolute;
-            bottom: -10px;
-            left: -10px;
-            background-color: #ccc;
-            border-radius: 50%;
-            box-shadow: 0 2px 0 #b3b3b3, 0 4px 0 #b3b3b3, 0 5px 40px rgba(0, 0, 0, 0.5);
+            bottom: 50px;
         }
 
+        /* General Layer Style */
         .layer {
             position: absolute;
-            display: block;
-            width: 250px;
-            height: 100px;
+            background-color: var(--cake-side);
             border-radius: 50%;
-            background-color: #553c13; /* Chocolate */
-            box-shadow: 0 2px 0px #6a4b18, 0 4px 0px #33240b, 0 5px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .layer-top { top: 0px; z-index: 3; background: #ff9a9e; } /* Frosting */
-        .layer-middle { top: 33px; z-index: 2; background: #fce4ec; }
-        .layer-bottom { top: 66px; z-index: 1; background: #fce4ec; }
-
-        .icing {
+        /* Top surface of the cake layers */
+        .layer::before {
+            content: '';
             position: absolute;
-            top: 2px;
-            left: 5px;
-            background-color: #ff9a9e;
-            width: 240px;
-            height: 90px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
             border-radius: 50%;
-            z-index: 4;
+            transform: translateY(-5px); /* Pull up to create the top */
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
         }
 
-        /* Candles */
-        .candle {
-            background-color: #7B020B;
-            width: 12px;
-            height: 35px;
-            border-radius: 6px/3px;
-            position: absolute;
-            top: -20px;
+        /* Specific Layer Sizing & Positioning */
+        .layer-bottom {
+            width: 260px;
+            height: 60px;
+            bottom: 0;
             left: 50%;
-            margin-left: -8px;
-            z-index: 10;
+            transform: translateX(-50%);
+            z-index: 1;
         }
-        .candle:nth-child(2) { left: 30%; top: -10px; }
-        .candle:nth-child(3) { left: 70%; top: -10px; }
+        .layer-bottom::before { background-color: var(--primary-dark); }
 
+        .layer-middle {
+            width: 220px;
+            height: 50px;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .layer-top {
+            width: 180px;
+            height: 40px;
+            bottom: 75px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        /* Single Candle */
+        .candle {
+            position: absolute;
+            bottom: 110px; /* Place on top of top layer */
+            left: 50%;
+            width: 14px;
+            height: 45px;
+            background: #b71c1c; /* Dark red color */
+            border-radius: 3px;
+            transform: translateX(-50%);
+            z-index: 4;
+            box-shadow: inset -2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        /* Flame */
         .flame {
             position: absolute;
-            background-color: orange;
-            width: 10px;
-            height: 20px;
-            border-radius: 8px 8px 8px 8px / 20px 20px 8px 8px;
             top: -25px;
             left: 50%;
-            margin-left: -7.5px;
-            z-index: 10;
-            box-shadow: 0 0 10px rgba(255, 165, 0, 0.5), 0 0 20px rgba(255, 165, 0, 0.5), 0 0 60px rgba(255, 165, 0, 0.5), 0 0 80px rgba(255, 165, 0, 0.5);
-            transform-origin: 50% 90%;
-            animation: flicker 1s ease-in-out alternate infinite;
+            width: 14px;
+            height: 30px;
+            background: orange;
+            border-radius: 50% 50% 20% 20%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px yellow, 0 0 30px orange;
+            animation: flicker 0.8s infinite alternate;
+            cursor: pointer;
             transition: opacity 0.5s;
         }
 
         .flame.out {
             opacity: 0;
+            animation: none;
         }
 
         @keyframes flicker {
-            0% { transform: skewX(5deg); box-shadow: 0 0 10px rgba(255, 165, 0, 0.2), 0 0 20px rgba(255, 165, 0, 0.2), 0 0 60px rgba(255, 165, 0, 0.2), 0 0 80px rgba(255, 165, 0, 0.2); }
-            25% { transform: skewX(-5deg); box-shadow: 0 0 10px rgba(255, 165, 0, 0.5), 0 0 20px rgba(255, 165, 0, 0.5), 0 0 60px rgba(255, 165, 0, 0.5), 0 0 80px rgba(255, 165, 0, 0.5); }
-            50% { transform: skewX(10deg); box-shadow: 0 0 10px rgba(255, 165, 0, 0.3), 0 0 20px rgba(255, 165, 0, 0.3), 0 0 60px rgba(255, 165, 0, 0.3), 0 0 80px rgba(255, 165, 0, 0.3); }
-            75% { transform: skewX(-10deg); box-shadow: 0 0 10px rgba(255, 165, 0, 0.4), 0 0 20px rgba(255, 165, 0, 0.4), 0 0 60px rgba(255, 165, 0, 0.4), 0 0 80px rgba(255, 165, 0, 0.4); }
-            100% { transform: skewX(5deg); box-shadow: 0 0 10px rgba(255, 165, 0, 0.5), 0 0 20px rgba(255, 165, 0, 0.5), 0 0 60px rgba(255, 165, 0, 0.5), 0 0 80px rgba(255, 165, 0, 0.5); }
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(0.9); opacity: 0.8; }
         }
 
         /* Knife Animation */
         .knife {
             position: absolute;
-            top: -50px;
-            right: 0;
-            font-size: 40px;
+            top: 0px;
+            right: 20px;
+            font-size: 50px;
             opacity: 0;
             transition: all 1s;
+            z-index: 10;
         }
         
-        .cut-slice {
-            transform: translate(20px, -10px);
-            transition: transform 1s;
-        }
-
         /* --- PAGE 4: MESSAGE --- */
         .card {
             background: #fff;
-            padding: 20px;
+            padding: 30px 20px;
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
             max-width: 90%;
@@ -297,12 +309,12 @@
         }
         
         .instruction {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 10px;
-            background: rgba(255,255,255,0.7);
-            padding: 5px 10px;
-            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #555;
+            background: rgba(255,255,255,0.8);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
         }
 
     </style>
@@ -334,24 +346,17 @@
     <div class="page" id="p3">
         <h1>Make a Wish!</h1>
         <div class="cake-container" id="cakebox">
-            <div class="plate"></div>
-            <div class="layer layer-bottom"></div>
-            <div class="layer layer-middle"></div>
-            <div class="layer layer-top"></div>
-            <div class="icing"></div>
-            
-            <div class="candle">
-                <div class="flame" id="f1"></div>
-            </div>
-            <div class="candle">
-                <div class="flame" id="f2"></div>
-            </div>
-            <div class="candle">
-                <div class="flame" id="f3"></div>
+            <div class="cake">
+                <div class="layer layer-bottom"></div>
+                <div class="layer layer-middle"></div>
+                <div class="layer layer-top"></div>
+                <div class="candle">
+                    <div class="flame" id="flame"></div>
+                </div>
             </div>
             <div class="knife" id="knife">🔪</div>
         </div>
-        <p class="instruction" id="msg">Tap the flames to blow them out!</p>
+        <p class="instruction" id="msg">Tap the flame to blow it out!</p>
         <button class="btn" id="nextBtn3" style="display:none;" onclick="nextPage(4)">Read Note</button>
     </div>
 
@@ -386,50 +391,49 @@
     }
 
     // --- CAKE INTERACTION ---
-    const flames = document.querySelectorAll('.flame');
+    const flame = document.getElementById('flame');
     const msg = document.getElementById('msg');
     const cakebox = document.getElementById('cakebox');
     const knife = document.getElementById('knife');
     const nextBtn3 = document.getElementById('nextBtn3');
-    let candlesBlown = 0;
-    let cakeCut = false;
+    let isCandleBlown = false;
+    let isCakeCut = false;
 
-    // Blow candles logic
-    flames.forEach(flame => {
-        flame.addEventListener('click', function() {
-            if(!this.classList.contains('out')) {
-                this.classList.add('out');
-                candlesBlown++;
-                if(candlesBlown === 3) {
-                    msg.innerText = "Yay! Now tap the cake to cut it 🍰";
-                    startConfetti();
-                }
-            }
-        });
+    // Blow candle logic
+    flame.addEventListener('click', function() {
+        if(!isCandleBlown) {
+            this.classList.add('out');
+            isCandleBlown = true;
+            msg.innerText = "Yay! Now tap the cake to cut it 🍰";
+            startConfetti();
+        }
     });
 
     // Cut cake logic
-    cakebox.addEventListener('click', function() {
-        if(candlesBlown === 3 && !cakeCut) {
+    cakebox.addEventListener('click', function(e) {
+        // Prevent cutting if clicking the flame itself
+        if(e.target.id === 'flame') return;
+
+        if(isCandleBlown && !isCakeCut) {
             knife.style.opacity = 1;
-            knife.style.top = "20px";
-            knife.style.transform = "rotate(-45deg)";
+            knife.style.top = "80px";
+            knife.style.transform = "rotate(-30deg)";
             
             setTimeout(() => {
-                knife.style.top = "60px"; // cut down
+                knife.style.top = "180px"; // move knife down
             }, 500);
 
             setTimeout(() => {
-                cakeCut = true;
+                isCakeCut = true;
                 msg.innerText = "Delicious! 🎉";
                 nextBtn3.style.display = "inline-block";
-                knife.style.opacity = 0; // hide knife
-            }, 1000);
+                knife.style.opacity = 0; // hide knife again
+            }, 1200);
         }
     });
 
 
-    // --- CONFETTI LOGIC (Simple JS Implementation) ---
+    // --- CONFETTI LOGIC ---
     const canvas = document.getElementById("confetti-canvas");
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
@@ -438,14 +442,16 @@
     let confettiParticles = [];
 
     function startConfetti() {
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 150; i++) {
             confettiParticles.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height - canvas.height,
-                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-                size: Math.random() * 5 + 2,
+                color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+                size: Math.random() * 8 + 4,
                 speedY: Math.random() * 3 + 2,
-                speedX: Math.random() * 2 - 1
+                speedX: Math.random() * 4 - 2,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 10 - 5
             });
         }
         animateConfetti();
@@ -456,17 +462,23 @@
         confettiParticles.forEach((p, index) => {
             p.y += p.speedY;
             p.x += p.speedX;
+            p.rotation += p.rotationSpeed;
+            
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation * Math.PI / 180);
             ctx.fillStyle = p.color;
-            ctx.fillRect(p.x, p.y, p.size, p.size);
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
 
             if (p.y > canvas.height) {
-                confettiParticles[index].y = -10;
+                confettiParticles[index].y = -20;
+                confettiParticles[index].x = Math.random() * canvas.width;
             }
         });
         requestAnimationFrame(animateConfetti);
     }
     
-    // Resize fix
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
